@@ -22,6 +22,23 @@ document.addEventListener('DOMContentLoaded', () => {
         display.textContent = currentInput;
     }
 
+    function computeResult() {
+        const a = parseFloat(previousInput);
+        const b = parseFloat(currentInput);
+        let result = 0;
+
+        switch (operator) {
+            case '+': result = a + b; break;
+            case '-': result = a - b; break;
+            case '×': result = a * b; break;
+            case '÷': result = b !== 0 ? a / b : 'Error'; break;
+            default: return;
+        }
+
+        currentInput = result.toString();
+        previousInput = '';
+        operator = null;
+    }
     // Event listeners
     numberButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -40,31 +57,21 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', () => {
             const op = button.textContent;
 
-            if (op === '+' || op === '-' || op === '×' || op === '÷') {
-                operator = op;
-                previousInput = currentInput;
-                shouldResetInput = true;
+            if (operator && !shouldResetInput) {
+                computeResult();
             }
+
+            previousInput = currentInput;
+            operator = op;
+            shouldResetInput = true;
+            updateDisplay();
         });
     });
 
     equalsButton.addEventListener('click', () => {
         if (!operator || previousInput === '') return;
 
-        const a = parseFloat(previousInput);
-        const b = parseFloat(currentInput);
-        let result = 0;
-        
-        switch (operator) {
-            case '+': result = a + b; break;
-            case '-': result = a - b; break;
-            case '×': result = a * b; break;
-            case '÷': result = b !== 0 ? a / b : 'Error'; break;
-        }
-
-        currentInput = result.toString();
-        operator = null;
-        previousInput = '';
+        computeResult();
         shouldResetInput = true;
         updateDisplay();
     });
