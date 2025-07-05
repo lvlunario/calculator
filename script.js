@@ -54,6 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDisplay();
     }
 
+    // PlusMinus
+    plusMinusButton?.addEventListener('click', () => {
+        currentInput = (parseFloat(currentInput) * -1).toString();
+        updateDisplay();
+    });
+
 
     // Event listeners
     numberButtons.forEach(button => {
