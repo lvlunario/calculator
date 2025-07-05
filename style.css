@@ -76,17 +76,13 @@ main {
     /* light gray or dark grey */
     background: linear-gradient(145deg, #d0d0d0, #a0a0a0);
     /* background: linear-gradient(145deg, #3a3a3a, #2a2a2a); */
-    border-radius: 25px;
     padding: 25px 20px;
     box-shadow: 
         0 10px 20px rgba(0, 0, 0, 0.3),
         inset 0 -3px 5px rgba(0, 0, 0, 0.2),
         inset 0 3px 5px rgba(255, 255, 255, 0.5);
     border: 2px solid #808080;
-    border-top-left-radius: 35px;
-    border-top-right-radius: 35px;
-    border-bottom-left-radius: 25px;
-    border-bottom-right-radius: 25px;
+    border-radius: 35px 35px 25px 25px;
 }
 
 .calculator-header {

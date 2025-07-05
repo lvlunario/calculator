@@ -16,28 +16,41 @@ document.addEventListener('DOMContentLoaded', () => {
     let previousInput = '';
     let operator = null;
     let shouldResetInput = false;
+    let lastOperator = null;
+    let lastOperand = null;
 
     // Update calculator display
     function updateDisplay() {
         display.textContent = currentInput;
     }
 
-    function computeResult() {
-        const a = parseFloat(previousInput);
-        const b = parseFloat(currentInput);
+    function computeResult(useLast = false) {
+        let a = parseFloat(previousInput);
+        let b = parseFloat(currentInput);
+
+        if (useLast && lastOperator && lastOperand !== null) {
+            a = parseFloat(currentInput);
+            b = lastOperand;
+            operator = lastOperator;
+        }
+
         let result = 0;
 
         switch (operator) {
             case '+': result = a + b; break;
             case '-': result = a - b; break;
-            case '×': result = a * b; break;
-            case '÷': result = b !== 0 ? a / b : 'Error'; break;
+            case '*': result = a * b; break;
+            case '/': result = b !== 0 ? a / b : 'Error'; break;
             default: return;
         }
 
         currentInput = result.toString();
+        if (!useLast) {
+            lastOperand = b;
+            lastOperator = operator;
+        }
         previousInput = '';
-        operator = null;
+        operator = useLast ? lastOperator : null;
     }
 
     decimalButton.addEventListener('click', () => {
@@ -56,8 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // PlusMinus
     plusMinusButton?.addEventListener('click', () => {
-        currentInput = (parseFloat(currentInput) * -1).toString();
-        updateDisplay();
+        if (currentInput !== '0') {
+            currentInput = (parseFloat(currentInput) * -1).toString();
+            updateDisplay();
+        }
+
     });
 
     // Percent
@@ -66,17 +82,68 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDisplay();
     })
 
+    // Backspace support
+    function handleBackspace() {
+        if (shouldResetInput || currentInput.length === 1) {
+            currentInput = '0';
+        } else {
+            currentInput = currentInput.slice(0, -1);
+        }
+        updateDisplay();
+    }
+
+    // Keyboard support
+    document.addEventListener('keydown', (e) => {
+        if (e.key >= '0' && e.key <= '9') {
+            handleNumber(e.key);
+        } else if (e.key === '.') {
+            handleDecimal();
+        } else if (e.key === '+' || e.key === '-') {
+            handleOperator(e.key);
+        } else if (e.key === '*' || e.key === 'X') {
+            handleOperator('*');
+        } else if (e.key === '/' || e.key === '÷') {
+            handleOperator('/');
+        } else if (e.key === 'Enter' || e.key === '=') {
+            equalsButton.click();
+        } else if (e.key === 'Backspace') {
+            handleBackspace();
+        } else if (e.key === 'Escape') {
+            resetCalculator();
+        } else if (e.key === 'n') {
+            currentInput = (parseFloat(currentInput) * -1).toString();
+            updateDisplay();
+        } else if (e.key === '%') {
+            currentInput = (parseFloat(currentInput) / 100).toString();
+            updateDisplay();
+        }
+    });
+
+    // Handle keyboard presses
+    function handleNumber(num) {
+        if (currentInput === '0' || shouldResetInput) {
+            currentInput = num;
+            shouldResetInput = false;
+        } else {
+            currentInput += num;
+        }
+        updateDisplay();
+    }
+
+    function handleOperator(op) {
+        if (operator && !shouldResetInput) {
+            computeResult();
+        }
+        previousInput = currentInput;
+        operator = op;
+        shouldResetInput = true;
+        updateDisplay();
+    }
+
     // Event listeners
     numberButtons.forEach(button => {
         button.addEventListener('click', () => {
-            if (currentInput === '0' || shouldResetInput) {
-                currentInput = button.textContent;
-                shouldResetInput = false;
-            } else {
-                // append - default case
-                currentInput += button.textContent;
-            }
-            updateDisplay();
+            handleNumber(button.textContent);
         });
     });
 
@@ -96,9 +163,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     equalsButton.addEventListener('click', () => {
-        if (!operator || previousInput === '') return;
+        if (operator && previousInput !== '') {
+            computeResult(true);
+        } else if (lastOperator && lastOperand != null) {
+            computeResult();
+        }
 
-        computeResult();
         shouldResetInput = true;
         updateDisplay();
     });
