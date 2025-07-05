@@ -149,7 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     operatorButtons.forEach(button => {
         button.addEventListener('click', () => {
-            const op = button.textContent;
+            let op = button.textContent;
+
+            // Normalize × and ÷
+            if (op === '×') op = '*';
+            if (op === '÷') op = '/';
 
             if (operator && !shouldResetInput) {
                 computeResult();
@@ -164,9 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     equalsButton.addEventListener('click', () => {
         if (operator && previousInput !== '') {
-            computeResult(true);
-        } else if (lastOperator && lastOperand != null) {
             computeResult();
+        } else if (lastOperator && lastOperand != null) {
+            computeResult(true);
         }
 
         shouldResetInput = true;
