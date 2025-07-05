@@ -11,10 +11,10 @@ This project is a browser based calculator using Javascript, HTML, and CSS.  The
 - **Chained Operations**: Handles sequential calculations without resetting the display.
 - **Error Handling**: Displays appropriate error messages for invalid operations like division by zero.
 - **Clear Functionality**: Resets the calculator to its default state.
-- **Backspace Support**: Allows users to undo their last input.
 - **Floating-Point Numbers**: Users can input decimal values.
 - **Plus-Minus button**: Switch between negative and positive numbers.
 - **Percentage button**: Calculates percentage with one click.
+- **Backspace Support**: Allows users to undo their last input.
 - **Keyboard Support**: Users can interact with the calculator using their keyboard.
 
 ## How to Run the Project
