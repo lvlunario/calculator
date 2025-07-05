@@ -9,12 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // DOM elements
     const display = document.querySelector('.display');
-    const numberButtons = document.querySelectorAll('.number');
-    const operatorButtons = document.querySelectorAll('.operator');
-    const equalsButton = document.querySelector('.equals');
-    const clearButton = document.querySelector('.clear');
-    const decimalButton = document.querySelector('.decimal');
-    const plusMinusButton = document.querySelector('.operator[data-operation="plusminus"]');
+    const numberButtons = document.querySelectorAll('.btn.number');
+    const operatorButtons = document.querySelectorAll('.btn.operator');
+    const equalsButton = document.querySelector('.btn.equals');
+    const clearButton = document.querySelector('.btn.clear');
+    const decimalButton = document.querySelector('.btn.decimal');
+    const plusMinusButton = document.querySelector('.btn.plusminus');
+    const percentButton = document.querySelector('.btn.percent');
 
     // Basic math operations
     const add = (a, b) => a + b;
@@ -74,5 +75,34 @@ document.addEventListener('DOMContentLoaded', () => {
         operation = null;
         updateDisplay();
     }
+
+    // Clear calculator
+    function clear() {
+        currentInput = '0';
+        previousInput = '';
+        operation = null;
+        updateDisplay();
+    }
+
+    // Event listeners
+    numberButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            handleNumber(button.textContent);
+        });
+    });
+
+    operatorButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const op = button.textContent === '×' ? '*' :
+                       button.textContent === '÷' ? '/' :
+                       button.textContent;
+            handleOperator(op);
+        });
+    });
+
+    equalsButton.addEventListener('click', calculate);
+    clearButton.addEventListener('click', clear);
+
+    updateDisplay();
 
 });
