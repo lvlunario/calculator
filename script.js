@@ -60,6 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDisplay();
     });
 
+    // Percent
+    percentButton?.addEventListener('click', () => {
+        currentInput = (parseFloat(currentInput) / 100).toString();
+        updateDisplay();
+    })
 
     // Event listeners
     numberButtons.forEach(button => {
