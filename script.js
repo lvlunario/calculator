@@ -39,6 +39,22 @@ document.addEventListener('DOMContentLoaded', () => {
         previousInput = '';
         operator = null;
     }
+
+    decimalButton.addEventListener('click', () => {
+        handleDecimal();
+    });
+
+    function handleDecimal() {
+        if (shouldResetInput) {
+            currentInput = '0.';
+            shouldResetInput = false;
+        } else if (!currentInput.includes('.')) {
+            currentInput += '.';
+        }
+        updateDisplay();
+    }
+
+
     // Event listeners
     numberButtons.forEach(button => {
         button.addEventListener('click', () => {
