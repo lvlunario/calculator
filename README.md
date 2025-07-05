@@ -4,7 +4,7 @@
 This project is a browser based calculator using Javascript, HTML, and CSS.  The application performs basic arithmetic operations such as addition, subtraction, multiplication, and division.  It is designed to be clean, responsive, and user-friendly.  Additional features include error handling, keyboard input support, and floating-point calculations.
 
 ## User Interface
-![user interface of calculator app](LLcalc.png)
+![user interface of calculator app](img/LLcalc.png)
 
 ## Features
 - **Basic Arithmetic**: Supports addition, subtraction, multiplication, and division.
